@@ -1,6 +1,6 @@
 # CloudInit Image Customizer and Firstboot Script
 
-This repository contains two Bash scripts, `cloudinit-customizer.sh` and `firstboot.sh`, designed to streamline the creation and configuration of Debian-based virtual machines (VMs) using cloud-init images. It automates the repetitive customization of VM images and sets them up the ways I likes 'em, without having to go through a manual OS install each time.
+This repository contains two Bash scripts, `cloudinit-customizer.sh` and `firstboot.sh`, designed to streamline the creation and configuration of Debian-based virtual machines (VMs) using cloud-init images. It automates the repetitive customization of VM images and sets them up the ways I likes 'em right off the bat, without having to go through a manual OS install each time I want to spin up a VM.
 
 ## Scripts
 
