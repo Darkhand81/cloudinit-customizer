@@ -53,4 +53,4 @@ The `firstboot.sh` script is embedded into each customized VM and is executed du
 
 ### 3. Creating a VM template
 
-Once you have your cusomtized image, set up a Proxmox template to clone VMs from, and attach the customized image. You can use a tutorial such as https://static.xtremeownage.com/blog/2024/proxmox---debian-cloud-init-templates/#step-3-create-a-vm
+Once you have your customized image, set up a Proxmox template to clone VMs from, and attach the customized image. You can use a tutorial such as https://static.xtremeownage.com/blog/2024/proxmox---debian-cloud-init-templates/#step-3-create-a-vm
