@@ -44,6 +44,7 @@ The `firstboot.sh` script is embedded into each customized VM and is executed du
   - Sets the primary user's (UID 1000, the one set up in Proxmox at VM clone time) default shell to `/bin/bash`
   - Adds the user to the sudoers group with passwordless sudo access
   - Configures their `.bashrc` with ll/la aliases and color prompts.
+  - Copies the same `.bashrc` to the root user's directory since we want the same customizations when logged in as root.
 - **Root Access Configuration**: Copies the primary user's password to the root account (this is configurable in case this freaks you out).
 - **Download Utility Scripts**: Downloads utility scripts directly from Github, to ensure they're up to date (currently my Decompress and Console scripts).
 - **System Logging**: Configures `journald` to forward logs to `syslog` and disables `journald` storage, because `journald` is yucky.
