@@ -48,7 +48,7 @@ The `firstboot.sh` script is embedded into each customized VM and is executed du
 - **Root Access Configuration**: Copies the primary user's password to the root account (configurable by setting `COPY_PASSWORD_TO_ROOT` to `false`, in case this freaks you out).
 - **Download and install utility scripts**: Downloads utility scripts directly from Github, to ensure they're up to date (currently my Decompress and Console scripts).
 - **System Logging**: Configures `journald` to forward logs to `syslog` and disables `journald` storage, because `journald` is yucky.
-- **GRUB Timeout**: Sets the GRUB boot timeout to 1 second if it exceeds this value (Debian cloudimit images default to 0 seconds already, but just in case).
+- **GRUB Timeout**: Sets the GRUB boot timeout to 1 second if it exceeds this value (Debian cloudinit images default to 0 seconds already, but just in case).
 - **SSH Configuration**: Allows root login and password authentication, but only on the local network (currently 192.168.1.0/24).
 
 ### 3. Creating a VM template
