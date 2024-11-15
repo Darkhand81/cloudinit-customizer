@@ -9,19 +9,15 @@
 # 1. Set default shell to /bin/bash for the user with UID 1000 (The primary user created during VM cloning/creation).
 # 2. Add the user to the sudoers group and configure password-less sudo access.
 # 3. Modify the user's .bashrc file to add helpful aliases and color prompt settings, and apply the same to the root user.
-# 4. Copy the user's password to the root account (toggle this off with the COPY_PASSWORD_TO_ROOT variable below, if it freaks you out).
-# 5. Download and install scripts (currently Darkhand81's Decompress and Console) to specified locations, optionally making them executable.
-# 6. Set GRUB timeout to 1 second if it is greater than 1 second.
-# 7. Configure journald to forward logs to syslog and disable its storage. Because it is yucky.
-# 8. Configure SSH to allow root login and password authentication, only from the local network.
-
+# 4. Download and install scripts (currently Darkhand81's Decompress and Console) to specified locations, optionally making them executable.
+# 5. Set GRUB timeout to 1 second if it is greater than 1 second.
+# 6. Configure journald to forward logs to syslog and disable its storage. Because it is yucky.
+# 7. Configure SSH to allow root login and password authentication, only from the local network.
 
 echo "=============================================="
 echo "Starting Firstboot Configuration Script v1.0"
 echo "=============================================="
 echo ""
-
-COPY_PASSWORD_TO_ROOT=true
 
 # ############ FUNCTIONS ############
 
@@ -63,20 +59,6 @@ function downloadAndSetExecutable() {
     fi
   else
     echo "Failed to download script from $url."
-  fi
-  echo ""
-}
-
-# A helper function to copy the password of one user to another
-function copyUserPassword() {
-  local source_user="$1"
-  local target_user="$2"
-  echo "Copying password from user '$source_user' to user '$target_user'..."
-  local hashed_password=$(getent shadow "$source_user" | cut -d: -f2)
-  if [ -n "$hashed_password" ]; then
-    usermod -p "$hashed_password" "$target_user" && echo "Password copied successfully from '$source_user' to '$target_user'."
-  else
-    echo "Failed to retrieve the password for user '$source_user'."
   fi
   echo ""
 }
@@ -123,13 +105,6 @@ echo "Copying modified .bashrc to /root/.bashrc..."
 cp "$BASHRC_FILE" /root/.bashrc && echo "/root/.bashrc updated."
 echo ""
 
-# Copy user's password to root user, controlled by COPY_PASSWORD_TO_ROOT variable
-if [ "$COPY_PASSWORD_TO_ROOT" == "true" ]; then
-  copyUserPassword "$USERNAME" "root"
-else
-  echo "Skipping copying password to root as per configuration."
-fi
-
 # Install decompress script and set executable
 downloadAndSetExecutable "https://raw.githubusercontent.com/Darkhand81/decompress/main/decompress.sh" "/usr/local/bin/decompress" true
 
@@ -145,7 +120,6 @@ systemctl restart systemd-journald && echo "systemd-journald restarted successfu
 echo ""
 
 # Change GRUB timeout at boot to 1 second if greater than 1 second
-# Debian Cloudinit currently sets a 0 second timeout by default, so this doesn't usually get used.
 echo "Configuring GRUB timeout..."
 current_timeout=$(grep -oP '(?<=^GRUB_TIMEOUT=)\d+' /etc/default/grub)
 if [[ "$current_timeout" -gt 1 ]]; then
