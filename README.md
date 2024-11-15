@@ -45,7 +45,6 @@ The `firstboot.sh` script is embedded into each customized VM and is executed du
   - Adds the user to the sudoers group with passwordless sudo access
   - Configures their `.bashrc` with ll/la aliases and color prompts.
   - Copies the same `.bashrc` to the root user's directory since we want the same customizations when logged in as root.
-- **Root Access Configuration**: Copies the primary user's password to the root account (configurable by setting `COPY_PASSWORD_TO_ROOT` to `false`, in case this freaks you out. But let's be real, if you have a sudoer's password you already have root).
 - **Download and install utility scripts**: Downloads utility scripts directly from Github, to ensure they're up to date (currently my Decompress and Console scripts that I'm too lazy to make Git installers for).
 - **System Logging**: Configures `journald` to forward logs to `syslog` and disables `journald` storage, because `journald` is yucky.
 - **GRUB Timeout**: Sets the GRUB boot timeout to 1 second if it exceeds this value (Debian cloudinit images default to 0 seconds already, but just in case).
