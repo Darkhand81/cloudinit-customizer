@@ -44,9 +44,19 @@ TIMEZONE="America/Chicago"
 
 # -----------------------------------------------------------
 
-# Check if libguestfs-tools is installed, install if not
+echo ""
+echo "---Cloudinit Image Customizer---"
+echo ""
+
+# Check if libguestfs-tools is installed, prompt for confirmation to install if not
 if ! dpkg -l | grep -qw libguestfs-tools; then
-    echo "libguestfs-tools is not installed. Installing..."
+    read -p "libguestfs-tools is not installed. Do you want to install it? (y/n) " INSTALL_CONFIRMATION
+    if [[ ! "$INSTALL_CONFIRMATION" =~ ^[Yy]$ ]]; then
+        echo "libguestfs-tools is required. Aborting."
+        exit 1
+    fi
+    echo "Installing libguestfs-tools..."
+    echo ""
     sudo apt-get update && sudo apt-get install -y libguestfs-tools
 fi
 
@@ -88,7 +98,9 @@ if [[ ! "$CONFIRMATION" =~ ^[Yy]$ ]]; then
 fi
 
 # Notify user that customization is starting
+echo ""
 echo "Starting customization of $IMAGE..."
+echo ""
 
 # - Install packages
 # - Set DHCP identifier to use MAC address for unique DHCP addresses
@@ -106,7 +118,9 @@ if ! virt-customize -a "$IMAGE" \
 fi
 
 # Notify user that customization is complete
+echo ""
 echo "Customization of $IMAGE completed successfully."
+echo ""
 
 # Compress the customized image
 COMPRESSED_IMAGE="${IMAGE%.qcow2}-shrink.qcow2"
@@ -117,6 +131,7 @@ if ! qemu-img convert -O qcow2 -c -o preallocation=off "$IMAGE" "$COMPRESSED_IMA
 fi
 
 echo "Image has been customized and compressed as $COMPRESSED_IMAGE"
+echo ""
 
 # Compare file sizes
 ORIGINAL_SIZE=$(du -h "$IMAGE" | cut -f1)
@@ -126,3 +141,4 @@ REDUCTION=$(du -b "$IMAGE" "$COMPRESSED_IMAGE" | awk 'NR==1{orig=$1} NR==2{comp=
 echo "Original image size: $ORIGINAL_SIZE"
 echo "Compressed image size: $COMPRESSED_SIZE"
 echo "Size reduction: $REDUCTION%"
+echo ""
