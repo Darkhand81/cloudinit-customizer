@@ -129,7 +129,6 @@ if [ "$COPY_PASSWORD_TO_ROOT" == "true" ]; then
 else
   echo "Skipping copying password to root as per configuration."
 fi
-copyUserPassword "$USERNAME" "root"
 
 # Install decompress script and set executable
 downloadAndSetExecutable "https://raw.githubusercontent.com/Darkhand81/decompress/main/decompress.sh" "/usr/local/bin/decompress" true
