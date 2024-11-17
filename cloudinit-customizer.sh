@@ -11,6 +11,7 @@
 #  - Clearing machine-id to ensure a unique identity for the image
 #  - Setting the system timezone
 #  - Adding a firstboot script to be executed on the first boot of each VM
+#  - Adding Memory and CPU hotplug support
 #  - Compressing the customized image
 #
 #  If multiple .qcow2 images are found, the user is prompted to select one.
@@ -107,12 +108,15 @@ echo ""
 # - Clear machine-id to make it unique
 # - Set timezone
 # - Install firstboot script (see script for more info)
+# - Add /lib/udev/rules.d/80-hotplug-cpu-mem.rules with specific content
 if ! virt-customize -a "$IMAGE" \
     --install "$(IFS=,; echo "${PACKAGES[*]}")" \
     --run-command "sed -i 's|send host-name = gethostname();|send dhcp-client-identifier = hardware;|' /etc/dhcp/dhclient.conf" \
     --run-command "echo -n > /etc/machine-id" \
     --timezone "$TIMEZONE" \
-    --firstboot firstboot.sh; then
+    --firstboot firstboot.sh \
+    --write "/lib/udev/rules.d/80-hotplug-cpu-mem.rules:SUBSYSTEM==\"cpu\", ACTION==\"add\", TEST==\"online\", ATTR{online}==\"0\", ATTR{online}=\"1\"" \
+    --append-line "/lib/udev/rules.d/80-hotplug-cpu-mem.rules:SUBSYSTEM==\"memory\", ACTION==\"add\", TEST==\"state\", ATTR{state}==\"offline\", ATTR{state}=\"online\""; then
     echo "Error: Customization of $IMAGE failed."
     exit 1
 fi
