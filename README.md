@@ -28,6 +28,7 @@ The `cloudinit-customizer.sh` script customizes a cloud image in `.qcow2` format
 - **Machine Identity**: We also need to reset the machine-id. Otherwise VMs will each acquire the same IP address when using DHCP (even if the MAC is different)
 - **Timezone**: Configures the system timezone to `America/Chicago` by default (can be changed within the script).
 - **Firstboot Script**: Integrates the `firstboot.sh` script (detailed below) to apply all my configurations that I usually make after OS install, during the first VM boot.
+- **Memory/CPU hotplug**: Adds udev rules to enable Memory and CPU hotplug support (Remember to enable NUMA in your VM template and that you control CPUs with the vCPU setting)
 - **Image Compression**: Compresses the customized image.
 
 #### Usage
